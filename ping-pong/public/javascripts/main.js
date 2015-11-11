@@ -1,5 +1,9 @@
 console.log("sup bro");
 var gravityOn = true;
+var socket = io();
+socket.on('connect', function() {
+    console.log('Connected!');
+  });
 
 $(document).on("keydown",function(e){
     var keyCode = e.keyCode;
