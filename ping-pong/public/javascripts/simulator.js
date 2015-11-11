@@ -205,6 +205,7 @@ function draw(pA)
 
 		            context.lineWidth = .3;
 		            context.closePath();
+		            context.strokeStyle = 'black';
 		            context.stroke();
 		        // }
 			});
@@ -322,6 +323,8 @@ function animate()
 	turn(pObjA,pProp);
 	draw(pObjA);
 	gravity();
+	intersectionChecker();
+	sketchDepth();
 }
 
 function createP(q)
