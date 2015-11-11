@@ -1,9 +1,74 @@
 console.log("sup bro");
 var gravityOn = true;
 var socket = io();
+var randomNumber = Math.random();
+var whoAmI;
 socket.on('connect', function() {
     console.log('Connected!');
   });
+
+socket.on("initial response",function(){
+    console.log("Emission");
+    socket.emit("determine first",randomNumber);
+});
+socket.on("send array",function(keyArray){
+    console.log("here's teh array!",keyArray);
+    keyArray.forEach(function(key,index){
+        if (key === randomNumber)
+        {
+            whoAmI = index + 1;
+            if (whoAmI === 1)
+            {
+              playerIndex = 0;
+            }
+            else if (whoAmI === 2)
+            {
+                playerIndex = 3;
+              // console.log("Initial enemyX is ",initialEnemyX, "Initial enemyY is ", initalEnemyY);
+              // paddleX = initialEnemyX;
+              // paddleY = initalEnemyY;
+              // enemyPos = initialPaddleX;
+              // enemyPosY = initialPaddleY;
+            }
+            $("#playerNumber").append(whoAmI);
+        }
+    });
+});
+
+socket.on("state request",function(){
+    if(whoAmI === 1)
+    {
+        socket.emit("send paddles",pObjA[0],pProp[0],randomNumber);      
+    }
+    else if (whoAmI ===2)
+    {
+        socket.emit("send paddles",pObjA[3],pProp[3],randomNumber);
+    }
+});
+
+socket.on("update enemy",function(paddleObj,paddleProp,key){
+    if (key !== randomNumber)
+    {
+        paddleObj.forEach(function(face,faceIndex){
+            face.forEach(function(point,pointIndex){
+                for (coordinate in point)
+                {
+                    if (whoAmI === 1)
+                    {
+                        pObjA[3][faceIndex][pointIndex][coordinate] = point[coordinate]; 
+                    }
+                    else if (whoAmI === 2)
+                    {
+                        pObjA[0][faceIndex][pointIndex][coordinate] = point[coordinate]; 
+                    }
+                    
+                    console.log(coordinate,point[coordinate]);
+                }         
+            });
+        }); 
+    }
+    // console.log("About to update the enemy ", paddleObj,paddleProp,key);
+});
 
 $(document).on("keydown",function(e){
     var keyCode = e.keyCode;
@@ -29,9 +94,9 @@ $(document).on("keydown",function(e){
     }
     if(keyCode === 37 || keyCode === 39)
     {
-        pObjA[0].forEach(function(face,faceIndex){
+        pObjA[playerIndex].forEach(function(face,faceIndex){
             face.forEach(function(point,pointIndex){
-                pObjA[0][faceIndex][pointIndex].y += deltaY;
+                pObjA[playerIndex][faceIndex][pointIndex].y += deltaY;
             });
         });
     }
@@ -45,11 +110,12 @@ $(document).on("keydown",function(e){
     }
     if(keyCode === 38 || keyCode === 40)
     {
-        pObjA[0].forEach(function(face,faceIndex){
+        pObjA[playerIndex].forEach(function(face,faceIndex){
             face.forEach(function(point,pointIndex){
-                pObjA[0][faceIndex][pointIndex].x += deltaX;
+                pObjA[playerIndex][faceIndex][pointIndex].x += deltaX;
             });
         });
+        console.log("Player index is ",playerIndex);
     }
     if(keyCode === 65 || keyCode === 83)
     {
@@ -78,11 +144,13 @@ var tableWidth = 500;
 var tableHeight = 5;
 var tableDepth = 500;
 var groundHeight = 100;
+var enemyPaddle = cuboidMaker(paddleWidth,paddleDepth,paddleHeight);
 
 var table = cuboidMaker(tableWidth,tableDepth,tableHeight);
 transform(25,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
 transform(500,100,groundHeight - paddleHeight -5,ball3d,0,0,0,1000,1000,500,-5,0,0);
 transform(25,100,groundHeight,table,0,0,0,1000,1000,500,0,0,0);
+transform(tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
 // transform(50,100,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 // transform(100,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 // transform(250,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
@@ -115,7 +183,7 @@ var time = 0;
 v0 = 13;
 var bounce = 0;
 var gameOver = false;
-gravityOn = true;
+gravityOn = false;
 
 function gravity()
 {
@@ -186,24 +254,21 @@ function intersectionChecker()
     var paddleX = pObjA[0][0][0].x;
     var ballX = pObjA[1][0][0].x;
     var paddleZ = pObjA[0][0][0].z;
-    var ballZ = pObjA[1][0][2].z;
+    var dragonBallZ = pObjA[1][0][2].z;
     var paddleY = pObjA[0][0][0].y;
     var ballY = pObjA[1][0][2].y;
 
     var ballProp = pProp[1];
 
     // console.log("ball is lower ",ballZ > paddleZ," ballz ",ballZ," paddlez ",paddleZ);
-    if ((ballX < paddleX + paddleDepth && ballX > paddleX)&& ballZ + ballHeight > paddleZ && (ballY > paddleY && ballY <paddleY + paddleWidth))
+    if ((ballX < paddleX + paddleDepth && ballX > paddleX)&& dragonBallZ + ballHeight > paddleZ && (ballY > paddleY && ballY <paddleY + paddleWidth))
     {
         ballProp.x *= -1;
         // console.log("ballX is ",ballX,"paddleX ",paddleX);
         // ballProp.x = 0;
-        // $("#gameOver").append("Past the paddle");
     }
 }
 $("canvas").click(function(){
-
-
     var ballProp = pProp[1];
     if (ballProp.x === 0)
     {
@@ -212,6 +277,5 @@ $("canvas").click(function(){
     else
     {
         ballProp.x = 0;
-    }
-    
+    }   
 });

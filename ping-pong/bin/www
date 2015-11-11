@@ -23,11 +23,33 @@ server.on('listening', onListening);
 /**
  * Normalize a port into a number, string, or false.
  */
+var keyA = [];
+var secondTime = 0;
+
+setInterval(function(){
+  io.emit('state request');
+},100);
 
 io.on('connect', function(socket) {
-    socket.emit('test',"test sup");
+  secondTime ++;
+  if(secondTime === 2)
+  {
+    io.emit('initial response');
+  }
+  socket.on("determine first", function(key){
+    console.log("Made it again to the server/ Key is ",key);
+    keyA.push(key);
+    if (keyA.length === 2)
+    {
+      io.emit("send array",keyA);
+      console.log("Sending the array back to the clients ", keyA);
+    }
   });
 
+  socket.on("send paddles", function(paddleObj,paddleProp,key){
+    io.emit("update enemy",paddleObj,paddleProp,key);
+  });
+});
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
