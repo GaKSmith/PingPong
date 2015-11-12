@@ -318,13 +318,13 @@ function animate()
 	theta += dTheta;
 	t += .01;
 	context.clearRect(0, 0, canvas.width, canvas.height);
-
 	move(pObjA);
 	turn(pObjA,pProp);
 	draw(pObjA);
 	gravity();
 	intersectionChecker();
 	sketchDepth();
+	shadow();
 }
 
 function createP(q)
@@ -345,5 +345,5 @@ function createP(q)
 	pObjA.push(p);
 }
 
-var interval = setInterval(animate, 1000 / 20)
+var interval = setInterval(animate, 1000 / 20);
 

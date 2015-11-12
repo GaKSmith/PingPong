@@ -8,31 +8,33 @@ socket.on('connect', function() {
   });
 
 socket.on("initial response",function(){
-    console.log("Emission");
+    // console.log("Emission");
     socket.emit("determine first",randomNumber);
 });
 socket.on("send array",function(keyArray){
-    console.log("here's teh array!",keyArray);
+    // console.log("here's teh array!",keyArray);
     keyArray.forEach(function(key,index){
         if (key === randomNumber)
         {
             whoAmI = index + 1;
             if (whoAmI === 1)
             {
-              playerIndex = 0;
+                playerIndex = 0;
             }
             else if (whoAmI === 2)
             {
                 playerIndex = 3;
-              // console.log("Initial enemyX is ",initialEnemyX, "Initial enemyY is ", initalEnemyY);
-              // paddleX = initialEnemyX;
-              // paddleY = initalEnemyY;
-              // enemyPos = initialPaddleX;
-              // enemyPosY = initialPaddleY;
             }
             $("#playerNumber").append(whoAmI);
         }
     });
+});
+$("#reset").click(function(){
+    socket.emit("reset");
+});
+
+socket.on("resett",function(){
+    location.href = "http://localhost:3000";
 });
 
 socket.on("state request",function(){
@@ -61,13 +63,10 @@ socket.on("update enemy",function(paddleObj,paddleProp,key){
                     {
                         pObjA[0][faceIndex][pointIndex][coordinate] = point[coordinate]; 
                     }
-                    
-                    console.log(coordinate,point[coordinate]);
                 }         
             });
         }); 
     }
-    // console.log("About to update the enemy ", paddleObj,paddleProp,key);
 });
 
 $(document).on("keydown",function(e){
@@ -146,14 +145,16 @@ var tableDepth = 500;
 var groundHeight = 100;
 var enemyPaddle = cuboidMaker(paddleWidth,paddleDepth,paddleHeight);
 
+
 var table = cuboidMaker(tableWidth,tableDepth,tableHeight);
 transform(25,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
-transform(500,100,groundHeight - paddleHeight -5,ball3d,0,0,0,1000,1000,500,-5,0,0);
+transform(200,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
 transform(25,100,groundHeight,table,0,0,0,1000,1000,500,0,0,0);
 transform(tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
 // transform(50,100,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 // transform(100,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 // transform(250,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
+var ballMove = pObjA[1];
 
 function sketchDepth()
 {
@@ -177,6 +178,27 @@ function sketchDepth()
         context.strokeStyle = '000000';
         context.stroke();
     }
+}
+function shadow()
+{
+    var ballY = ballMove[0][0].y;
+    var ballY2 = ballMove[0][2].y;
+    var ballYAvg = (ballY + ballY2) / 2;
+
+    var ballZ = ballMove[0][0].z;
+    var ballZ2 = ballMove[0][2].z;
+    var ballZAvg = (ballZ + ballZ2) / 2;
+
+    var ballX = ballMove[0][0].x;
+    var ballX2 = ballMove[1][1].x;
+    var ballXAvg = (ballX + ballX2) / 2;
+
+    var g1y = pointConvert(ballX,ballY);
+    var g1z = pointConvert(ballX,groundHeight);
+
+    circle(g1y,g1z,2,2 * PI);
+
+    console.log(ballY,ballY2);
 }
 
 var time = 0;
@@ -214,11 +236,19 @@ function gravity()
             //     console.log("Game is over");
             //     v0 = .5 * (g * (time -1) -v0);
                 time = 0;
-            // }
-           
+            // }   
         }
     }
 }
+function circle (x,y,r,w)
+{
+    context.lineWidth = w;
+    context.beginPath();
+    context.arc(x,y,r,0,2 * PI);
+    context.closePath();
+    context.stroke();
+}
+
 var point1 = {x: pObjA[2][0][0].x, y: pObjA[2][0][0].y,z: 300};
 var point2 = {x: pObjA[2][1][1].x, y: pObjA[2][0][0].y,z: 300};
 
@@ -258,10 +288,25 @@ function intersectionChecker()
     var paddleY = pObjA[0][0][0].y;
     var ballY = pObjA[1][0][2].y;
 
+    var paddleFarX = pObjA[3][0][0].x;
+    var paddleFarY = pObjA[3][0][0].y;
+    var paddleFarZ = pObjA[3][0][0].z;
+
     var ballProp = pProp[1];
 
+    // if (ballX < paddleX)
+    // {
+    //     ballProp.x = 0;
+    //     ballProp.y = 0;
+    // }
     // console.log("ball is lower ",ballZ > paddleZ," ballz ",ballZ," paddlez ",paddleZ);
-    if ((ballX < paddleX + paddleDepth && ballX > paddleX)&& dragonBallZ + ballHeight > paddleZ && (ballY > paddleY && ballY <paddleY + paddleWidth))
+    if ((ballX < paddleX + paddleDepth && ballX > paddleX) && dragonBallZ > paddleZ && (ballY > paddleY && ballY < paddleY + paddleWidth))
+    {
+        ballProp.x *= -1;
+        // console.log("ballX is ",ballX,"paddleX ",paddleX);
+        // ballProp.x = 0;
+    }
+    else if ((ballX < paddleFarX + paddleDepth && ballX > paddleFarX) && (ballY > paddleFarY && ballY < paddleFarY + paddleWidth) &&(dragonBallZ > paddleFarZ))
     {
         ballProp.x *= -1;
         // console.log("ballX is ",ballX,"paddleX ",paddleX);
@@ -272,10 +317,10 @@ $("canvas").click(function(){
     var ballProp = pProp[1];
     if (ballProp.x === 0)
     {
-        ballProp.x = -5
+        // ballProp.x = -5
     }
     else
     {
-        ballProp.x = 0;
+        // ballProp.x = 0;
     }   
 });

@@ -31,6 +31,7 @@ setInterval(function(){
 },100);
 
 io.on('connect', function(socket) {
+  console.log("Connected ",secondTime);
   secondTime ++;
   if(secondTime === 2)
   {
@@ -49,6 +50,13 @@ io.on('connect', function(socket) {
   socket.on("send paddles", function(paddleObj,paddleProp,key){
     io.emit("update enemy",paddleObj,paddleProp,key);
   });
+
+ socket.on('reset', function(){
+    io.emit('resett');
+    secondTime = 0;
+    keyA = [];
+  });
+
 });
 
 function normalizePort(val) {
