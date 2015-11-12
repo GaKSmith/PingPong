@@ -32,7 +32,7 @@ $("#reset").click(function(){
 });
 
 socket.on("resett",function(){
-    location.href = "http://localhost:3000";
+    location.href = "/";
 });
 
 socket.on("state request",function(){
