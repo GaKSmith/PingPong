@@ -8,11 +8,9 @@ socket.on('connect', function() {
   });
 
 socket.on("initial response",function(){
-    // console.log("Emission");
     socket.emit("determine first",randomNumber);
 });
 socket.on("send array",function(keyArray){
-    // console.log("here's teh array!",keyArray);
     keyArray.forEach(function(key,index){
         if (key === randomNumber)
         {
@@ -46,6 +44,7 @@ socket.on("state request",function(){
     {
         socket.emit("send paddles",pObjA[3],pProp[3],randomNumber);
     }
+    // socket.emit("send paddles",pObjA[playerIndex],pProp[playerIndex],randomNumber);
 });
 
 socket.on("update enemy",function(paddleObj,paddleProp,key){
@@ -85,11 +84,11 @@ $(document).on("keydown",function(e){
     }
     else if (keyCode === 65)
     {
-        pProp[0].zA += -1;
+        pProp[playerIndex].zA += -1;
     }
     else if (keyCode === 83)
     {
-        pProp[0].zA += 1;
+        pProp[playerIndex].zA += 1;
     }
     if(keyCode === 37 || keyCode === 39)
     {
@@ -118,19 +117,24 @@ $(document).on("keydown",function(e){
     }
     if(keyCode === 65 || keyCode === 83)
     {
-        var xRot1z = pObjA[0][0][0].z;
-        var xRot2z = pObjA[0][0][1].z;
-        pProp[0].zF = (xRot1z + xRot2z) /2;
-
-        var xRot1y = pObjA[0][0][0].y;
-        var xRot2y = pObjA[0][0][1].y;
-        pProp[0].yF = (xRot1y + xRot2y) /2;
-
-        var xRot1x = pObjA[0][0][0].x;
-        var xRot2x = pObjA[0][0][1].x;
-        pProp[0].xF = (xRot1x + xRot2x) /2;
+        adjustAxes = true;
     }
 });
+var adjustAxes = false;
+function changeRotAxes()
+{
+    var xRot1z = pObjA[playerIndex][0][0].z;
+    var xRot2z = pObjA[playerIndex][0][1].z;
+    pProp[playerIndex].zF = (xRot1z + xRot2z) /2;
+
+    var xRot1y = pObjA[playerIndex][0][0].y;
+    var xRot2y = pObjA[playerIndex][0][1].y;
+    pProp[playerIndex].yF = (xRot1y + xRot2y) /2;
+
+    var xRot1x = pObjA[playerIndex][0][0].x;
+    var xRot2x = pObjA[playerIndex][0][1].x;
+    pProp[playerIndex].xF = (xRot1x + xRot2x) /2;
+}
 var paddleHeight = 50;
 var paddleWidth = 50;
 var paddleDepth = 10;
@@ -144,7 +148,6 @@ var tableHeight = 5;
 var tableDepth = 500;
 var groundHeight = 100;
 var enemyPaddle = cuboidMaker(paddleWidth,paddleDepth,paddleHeight);
-
 
 var table = cuboidMaker(tableWidth,tableDepth,tableHeight);
 transform(25,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
@@ -197,8 +200,6 @@ function shadow()
     var g1z = pointConvert(ballX,groundHeight);
 
     circle(g1y,g1z,2,2 * PI);
-
-    console.log(ballY,ballY2);
 }
 
 var time = 0;

@@ -325,6 +325,11 @@ function animate()
 	intersectionChecker();
 	sketchDepth();
 	shadow();
+	if (adjustAxes)
+	{
+		changeRotAxes();
+	}
+
 }
 
 function createP(q)

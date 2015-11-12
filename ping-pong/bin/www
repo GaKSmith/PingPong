@@ -25,10 +25,14 @@ server.on('listening', onListening);
  */
 var keyA = [];
 var secondTime = 0;
+var letsGetThisGoing = false;
 
-setInterval(function(){
-  io.emit('state request');
-},100);
+if (true)
+{
+  setInterval(function(){
+    io.emit('state request');
+  },100);
+}
 
 io.on('connect', function(socket) {
   console.log("Connected ",secondTime);
@@ -44,6 +48,7 @@ io.on('connect', function(socket) {
     {
       io.emit("send array",keyA);
       console.log("Sending the array back to the clients ", keyA);
+      letsGetThisGoing = true;
     }
   });
 
@@ -55,6 +60,7 @@ io.on('connect', function(socket) {
     io.emit('resett');
     secondTime = 0;
     keyA = [];
+    letsGetThisGoing = false;
   });
 
 });
