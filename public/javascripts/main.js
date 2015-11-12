@@ -40,7 +40,7 @@ socket.on("state request",function(){
     {
         socket.emit("send paddles",pObjA[0],pProp[0],randomNumber);      
     }
-    else if (whoAmI ===2)
+    else if (whoAmI === 2)
     {
         socket.emit("send paddles",pObjA[3],pProp[3],randomNumber);
     }
@@ -76,11 +76,13 @@ $(document).on("keydown",function(e){
     var phi;
     if (keyCode === 37)
     {
-        deltaY = -20; 
+        // deltaY = -20; 
+        pProp[playerIndex].y -=5;
     }
     else if (keyCode === 39)
     {
-        deltaY = 20;
+        // deltaY = 20;
+        pProp[playerIndex].y +=5;
     }
     else if (keyCode === 65)
     {
@@ -90,31 +92,17 @@ $(document).on("keydown",function(e){
     {
         pProp[playerIndex].zA += 1;
     }
-    if(keyCode === 37 || keyCode === 39)
-    {
-        pObjA[playerIndex].forEach(function(face,faceIndex){
-            face.forEach(function(point,pointIndex){
-                pObjA[playerIndex][faceIndex][pointIndex].y += deltaY;
-            });
-        });
-    }
     if (keyCode === 38)
     {
-        deltaX = 20; 
+        // deltaX = 20;
+        pProp[playerIndex].x +=5
     }
     else if (keyCode === 40)
     {
-        deltaX = -20;
+        // deltaX = -20;
+        pProp[playerIndex].x -=5;
     }
-    if(keyCode === 38 || keyCode === 40)
-    {
-        pObjA[playerIndex].forEach(function(face,faceIndex){
-            face.forEach(function(point,pointIndex){
-                pObjA[playerIndex][faceIndex][pointIndex].x += deltaX;
-            });
-        });
-        console.log("Player index is ",playerIndex);
-    }
+
     if(keyCode === 65 || keyCode === 83)
     {
         adjustAxes = true;
@@ -314,14 +302,3 @@ function intersectionChecker()
         // ballProp.x = 0;
     }
 }
-$("canvas").click(function(){
-    var ballProp = pProp[1];
-    if (ballProp.x === 0)
-    {
-        // ballProp.x = -5
-    }
-    else
-    {
-        // ballProp.x = 0;
-    }   
-});
