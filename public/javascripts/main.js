@@ -325,3 +325,18 @@ function intersectionChecker()
         $("#gameOver").text("Player one has " + player1Score + " Player two has " + player2Score);
     }
 }
+function gameOver1()
+{
+    if (player1Score === 10)
+    {
+        pProp[1].x = 0;
+        pProp[1].y = 0;
+        $("#gameOver").text("Game over!!! Player 1 is the winner");
+    }
+    else if (player2Score === 10)
+    {
+        pProp[1].x = 0;
+        pProp[1].y = 0;
+        $("#gameOver").text("Game over!!! Player 2 is the winner");
+    }
+}

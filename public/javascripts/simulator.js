@@ -325,6 +325,7 @@ function animate()
 	intersectionChecker();
 	sketchDepth();
 	shadow();
+	gameOver1();
 	if (adjustAxes)
 	{
 		changeRotAxes();
