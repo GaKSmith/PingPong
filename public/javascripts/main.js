@@ -70,18 +70,13 @@ socket.on("update enemy",function(paddleObj,paddleProp,key){
 
 $(document).on("keydown",function(e){
     var keyCode = e.keyCode;
-    var deltaX;
-    var deltaY;
-    var theta;
     var phi;
     if (keyCode === 37)
     {
-        // deltaY = -20; 
         pProp[playerIndex].y -=5;
     }
     else if (keyCode === 39)
     {
-        // deltaY = 20;
         pProp[playerIndex].y +=5;
     }
     else if (keyCode === 65)
@@ -92,15 +87,13 @@ $(document).on("keydown",function(e){
     {
         pProp[playerIndex].zA += 1;
     }
-    if (keyCode === 38)
+    else if (keyCode === 38)
     {
-        // deltaX = 20;
-        pProp[playerIndex].x +=5
+        pProp[playerIndex].x += 5
     }
     else if (keyCode === 40)
     {
-        // deltaX = -20;
-        pProp[playerIndex].x -=5;
+        pProp[playerIndex].x -= 5;
     }
 
     if(keyCode === 65 || keyCode === 83)
@@ -136,10 +129,12 @@ var tableHeight = 5;
 var tableDepth = 500;
 var groundHeight = 100;
 var enemyPaddle = cuboidMaker(paddleWidth,paddleDepth,paddleHeight);
+var player1Score = 0;
+var player2Score = 0;
 
 var table = cuboidMaker(tableWidth,tableDepth,tableHeight);
 transform(25,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
-transform(200,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
+transform(400,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
 transform(25,100,groundHeight,table,0,0,0,1000,1000,500,0,0,0);
 transform(tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
 // transform(50,100,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
@@ -300,5 +295,19 @@ function intersectionChecker()
         ballProp.x *= -1;
         // console.log("ballX is ",ballX,"paddleX ",paddleX);
         // ballProp.x = 0;
+    }
+    else if (ballX > tableDepth + 100)
+    {
+        player1Score ++;
+        var tempArray = pObjA.splice(0,2);
+        tempArray.pop();
+        transform(300,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
+        pProp[1].x = -5;
+        pProp.pop();
+        tempArray.push(pObjA.pop());
+        pObjA = tempArray.concat(pObjA);
+        ballMove = pObjA[1];
+
+        $("#gameOver").text("Player one has " + player1Score + " Player two has " + player2Score);
     }
 }
