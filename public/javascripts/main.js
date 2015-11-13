@@ -123,7 +123,7 @@ var ballHeight = 10;
 var paddle3d = cuboidMaker(paddleWidth,paddleDepth,paddleHeight);
 var ball3d = cuboidMaker(10,10,10);
 var test3dHeight = 10;
-var test3d = cuboidMaker(10,10,test3dHeight);
+var test3d = cuboidMaker(10,100,test3dHeight);
 var tableWidth = 500;
 var tableHeight = 5;
 var tableDepth = 500;
@@ -137,7 +137,7 @@ transform(25,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0)
 transform(400,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
 transform(25,100,groundHeight,table,0,0,0,1000,1000,500,0,0,0);
 transform(tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
-// transform(50,100,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
+// transform(tableDepth,100,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 // transform(100,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 // transform(250,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 var ballMove = pObjA[1];
@@ -287,7 +287,7 @@ function intersectionChecker()
     if ((ballX < paddleX + paddleDepth && ballX > paddleX) && dragonBallZ > paddleZ && (ballY > paddleY && ballY < paddleY + paddleWidth))
     {
         ballProp.x *= -1;
-        // console.log("ballX is ",ballX,"paddleX ",paddleX);
+        console.log("ballX is ",ballX,"paddleX ",paddleX);
         // ballProp.x = 0;
     }
     else if ((ballX < paddleFarX + paddleDepth && ballX > paddleFarX) && (ballY > paddleFarY && ballY < paddleFarY + paddleWidth) &&(dragonBallZ > paddleFarZ))
@@ -303,6 +303,20 @@ function intersectionChecker()
         tempArray.pop();
         transform(300,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
         pProp[1].x = -5;
+        pProp.pop();
+        tempArray.push(pObjA.pop());
+        pObjA = tempArray.concat(pObjA);
+        ballMove = pObjA[1];
+
+        $("#gameOver").text("Player one has " + player1Score + " Player two has " + player2Score);
+    }
+    else if (ballX < 15)
+    {
+        player2Score ++;
+        var tempArray = pObjA.splice(0,2);
+        tempArray.pop();
+        transform(300,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
+        pProp[1].x = 5;
         pProp.pop();
         tempArray.push(pObjA.pop());
         pObjA = tempArray.concat(pObjA);
