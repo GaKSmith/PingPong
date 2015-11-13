@@ -24,6 +24,8 @@ socket.on("send array",function(keyArray){
                 playerIndex = 3;
             }
             $("#playerNumber").append(whoAmI);
+            pProp[1].x = -5;
+            pProp[1].y = 2;
         }
     });
 });
@@ -134,7 +136,7 @@ var player2Score = 0;
 
 var table = cuboidMaker(tableWidth,tableDepth,tableHeight);
 transform(25,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
-transform(400,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
+transform(400,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,0,0,0);
 transform(25,100,groundHeight,table,0,0,0,1000,1000,500,0,0,0);
 transform(tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
 // transform(tableDepth,100,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
