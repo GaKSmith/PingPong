@@ -191,7 +191,7 @@ var time = 0;
 v0 = 13;
 var bounce = 0;
 var gameOver = false;
-gravityOn = false;
+gravityOn = true;
 
 function gravity()
 {
