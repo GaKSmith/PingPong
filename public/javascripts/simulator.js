@@ -107,7 +107,7 @@ function turn (objA,pProp)
 				var prop = pProp[l];
 
 				var xRot = mathTurn(prop.xA,prop.yF,prop.zF,pPoint.y,pPoint.z);
-	
+
 				 pPoint.y = xRot.a;
 				 pPoint.z = xRot.b;
 
@@ -190,7 +190,7 @@ function draw(pA)
 					var gy2 = faceArray2d[0].x;
 					var gz2 = faceArray2d[0].y;
 				}
-				else 
+				else
 				{
 					var gy1 = point2d.x;
 					var gz1 = point2d.y;
@@ -200,13 +200,12 @@ function draw(pA)
 				// if (x1 > - D)
 				// {
 					context.beginPath();
-		            context.moveTo(gy1 + 00, gz1);
-		            context.lineTo(gy2 + 00, gz2);
-
-		            context.lineWidth = .3;
-		            context.closePath();
-		            context.strokeStyle = 'black';
-		            context.stroke();
+          context.moveTo(gy1 + 100, gz1);
+          context.lineTo(gy2 + 100, gz2);
+          context.lineWidth = .3;
+          context.closePath();
+          context.strokeStyle = 'black';
+          context.stroke();
 		        // }
 			});
 		}
@@ -214,9 +213,6 @@ function draw(pA)
 
 	pA.forEach(function(pObject,l){              //pA - Array of objects
 		pObject.forEach(function(pFace,m){         //pObject Physical object
-			//console.log((pFace[0].y < pFace[1].y),m);
-			//if (pFace[0].y <= pFace[1].y)
-			{
 				work = 0;
 				var face2d = [];
 				for(var n = 0; n < pFace.length - 1; n ++)
@@ -233,7 +229,7 @@ function draw(pA)
 					var gy1 = pointConvert(pFace[n].x,pFace[n].y);
 					var gz1 = pointConvert(pFace[n].x,pFace[n].z);
 					face2d.push({x : gy1, y : gz1});
-					
+
 					// graph(x1,y1,z1,x2,y2,z2);
 				}
 
@@ -247,7 +243,6 @@ function draw(pA)
 
 				checksIfBehind(face2d,{x : piqx, y: piqy});
 				graphPart2(face2d,{x:piqx,y:piqy});
-			}
 		});
 	});
 }

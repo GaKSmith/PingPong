@@ -28,6 +28,7 @@ socket.on("send array",function(keyArray){
             pProp[1].y = 2;
         }
     });
+    $("#gameOver").text("Play some pong!!!");
 });
 $("#reset").click(function(){
     socket.emit("reset");
@@ -40,7 +41,7 @@ socket.on("resett",function(){
 socket.on("state request",function(){
     if(whoAmI === 1)
     {
-        socket.emit("send paddles",pObjA[0],pProp[0],randomNumber);      
+        socket.emit("send paddles",pObjA[0],pProp[0],randomNumber);
     }
     else if (whoAmI === 2)
     {
@@ -58,50 +59,77 @@ socket.on("update enemy",function(paddleObj,paddleProp,key){
                 {
                     if (whoAmI === 1)
                     {
-                        pObjA[3][faceIndex][pointIndex][coordinate] = point[coordinate]; 
+                        pObjA[3][faceIndex][pointIndex][coordinate] = point[coordinate];
                     }
                     else if (whoAmI === 2)
                     {
-                        pObjA[0][faceIndex][pointIndex][coordinate] = point[coordinate]; 
+                        pObjA[0][faceIndex][pointIndex][coordinate] = point[coordinate];
                     }
-                }         
+                }
             });
-        }); 
+        });
     }
 });
-
+var leftSlow = 0;
+var rightSlow = 0;
+var topSlow = 0;
+var backSlow = 0;
 $(document).on("keydown",function(e){
-    var keyCode = e.keyCode;
-    var phi;
-    if (keyCode === 37)
+  var keyCode = e.keyCode;
+  var phi;
+  if (keyCode === 37)
+  {
+    var leftSpeed = pProp[playerIndex].y;
+    if (leftSpeed <= 0)
     {
-        pProp[playerIndex].y -=5;
+      pProp[playerIndex].y -=5;
     }
-    else if (keyCode === 39)
+    else if (leftSpeed > 5)
     {
-        pProp[playerIndex].y +=5;
+      pProp[playerIndex].y = 5;
     }
-    else if (keyCode === 65)
+    else
     {
-        pProp[playerIndex].zA += -1;
+      pProp[playerIndex].y = 0;
     }
-    else if (keyCode === 83)
+  }
+  else if (keyCode === 39)
+  {
+    var leftSpeed = pProp[playerIndex].y;
+    if (leftSpeed >= 0)
     {
-        pProp[playerIndex].zA += 1;
+      pProp[playerIndex].y +=5;
     }
-    else if (keyCode === 38)
+    else if (leftSpeed < -5)
     {
-        pProp[playerIndex].x += 5
+      pProp[playerIndex].y = -5;
     }
-    else if (keyCode === 40)
+    else
     {
-        pProp[playerIndex].x -= 5;
+      pProp[playerIndex].y = 0;
     }
+  }
+  else if (keyCode === 65)
+  {
+      pProp[playerIndex].zA += -1;
+  }
+  else if (keyCode === 83)
+  {
+      pProp[playerIndex].zA += 1;
+  }
+  else if (keyCode === 38)
+  {
+      pProp[playerIndex].x += 5
+  }
+  else if (keyCode === 40)
+  {
+      pProp[playerIndex].x -= 5;
+  }
 
-    if(keyCode === 65 || keyCode === 83)
-    {
-        adjustAxes = true;
-    }
+  if(keyCode === 65 || keyCode === 83)
+  {
+      adjustAxes = true;
+  }
 });
 var adjustAxes = false;
 function changeRotAxes()
@@ -135,9 +163,9 @@ var player1Score = 0;
 var player2Score = 0;
 
 var table = cuboidMaker(tableWidth,tableDepth,tableHeight);
-transform(25,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
-transform(400,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,0,0,0);
-transform(25,100,groundHeight,table,0,0,0,1000,1000,500,0,0,0);
+transform(25,0,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
+transform(400,0,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,0,0,0);
+transform(25,0,groundHeight,table,0,0,0,1000,1000,500,0,0,0);
 transform(tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
 // transform(tableDepth,100,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 // transform(100,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
@@ -159,8 +187,8 @@ function sketchDepth()
         var gz2 = pointConvert(i,z);
 
         context.beginPath();
-        context.moveTo(gy1, gz1);
-        context.lineTo(gy2, gz2);
+        context.moveTo(gy1 + 100, gz1);
+        context.lineTo(gy2 +100, gz2);
         context.lineWidth = .1;
         context.closePath();
         context.strokeStyle = '000000';
@@ -191,7 +219,7 @@ var time = 0;
 v0 = 13;
 var bounce = 0;
 var gameOver = false;
-gravityOn = true;
+gravityOn = false;
 
 function gravity()
 {
@@ -222,7 +250,7 @@ function gravity()
             //     console.log("Game is over");
             //     v0 = .5 * (g * (time -1) -v0);
                 time = 0;
-            // }   
+            // }
         }
     }
 }
@@ -230,7 +258,7 @@ function circle (x,y,r,w)
 {
     context.lineWidth = w;
     context.beginPath();
-    context.arc(x,y,r,0,2 * PI);
+    context.arc(x + 100,y,r,0,2 * PI);
     context.closePath();
     context.stroke();
 }
@@ -258,7 +286,7 @@ function makeLineFromPoints(point1,point2)
     }
 
     var a = (z2 - z1) /(x2 - x1);
-    var b = z1 - a * x1; 
+    var b = z1 - a * x1;
     var c = (z2 - z1) / (y2 - y1);
     var d = z1 - c * y1;
 
@@ -280,23 +308,14 @@ function intersectionChecker()
 
     var ballProp = pProp[1];
 
-    // if (ballX < paddleX)
-    // {
-    //     ballProp.x = 0;
-    //     ballProp.y = 0;
-    // }
-    // console.log("ball is lower ",ballZ > paddleZ," ballz ",ballZ," paddlez ",paddleZ);
     if ((ballX < paddleX + paddleDepth && ballX > paddleX) && dragonBallZ > paddleZ && (ballY > paddleY && ballY < paddleY + paddleWidth))
     {
         ballProp.x *= -1;
         console.log("ballX is ",ballX,"paddleX ",paddleX);
-        // ballProp.x = 0;
     }
     else if ((ballX < paddleFarX + paddleDepth && ballX > paddleFarX) && (ballY > paddleFarY && ballY < paddleFarY + paddleWidth) &&(dragonBallZ > paddleFarZ))
     {
         ballProp.x *= -1;
-        // console.log("ballX is ",ballX,"paddleX ",paddleX);
-        // ballProp.x = 0;
     }
     else if (ballX > tableDepth + 100)
     {
