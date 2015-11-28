@@ -14,6 +14,8 @@ var cuboid70 = cuboidMaker(300,200,100);
 var canvas = document.getElementById("c");
 context = canvas.getContext("2d");
 var clickState = 0;
+var origin = {x:0,y:0,z:0};
+origin.z = -380;
 
 function copy(arr)
 {
@@ -152,28 +154,11 @@ function move(pA)
 	});
 }
 
-function pointConvert(x,w)
+function pointConvert(x,w,l)
 {
+  x -= origin.x;
+  w -= origin[l];
 	return  w * D / (x + D);
-}
-function graph(x1,y1,z1,x2,y2,z2)
-{
-	var gy1 = pointConvert(x1,y1);
-	var gz1 = pointConvert(x1,z1);
-	var gy2 = pointConvert(x2,y2);
-	var gz2 = pointConvert(x2,z2);
-
-	//call a function that checks if it is an area that should be seen, or is obscured but the object or another object
-
-	if (x1 > - D)
-	{
-        context.beginPath();
-        context.moveTo(gy1 + 00, gz1);
-        context.lineTo(gy2 + 00, gz2);
-        context.lineWidth = .3;
-        context.closePath();
-        context.stroke();
-    }
 }
 
 function draw(pA)
@@ -226,17 +211,18 @@ function draw(pA)
 					var z1 = pPoint.z;
 					var z2 = pPoint1.z;
 
-					var gy1 = pointConvert(pFace[n].x,pFace[n].y);
-					var gz1 = pointConvert(pFace[n].x,pFace[n].z);
+					var gy1 = pointConvert(pFace[n].x,pFace[n].y,'y');
+					var gz1 = pointConvert(pFace[n].x,pFace[n].z,'z');
 					face2d.push({x : gy1, y : gz1});
 
 					// graph(x1,y1,z1,x2,y2,z2);
 				}
-
-				var point2D1x = pointConvert(pFace[0].x,pFace[0].y);
-				var point2D1y = pointConvert(pFace[0].x,pFace[0].z);
-				var point2D2x = pointConvert(pFace[2].x,pFace[2].y);
-				var point2D2y = pointConvert(pFace[2].x,pFace[2].z);
+        //the following is for finding the point in the middle of the face which will be used for determining
+        //orientation of the face
+				var point2D1x = pointConvert(pFace[0].x,pFace[0].y,'y');
+				var point2D1y = pointConvert(pFace[0].x,pFace[0].z,'z');
+				var point2D2x = pointConvert(pFace[2].x,pFace[2].y,'y');
+				var point2D2y = pointConvert(pFace[2].x,pFace[2].z,'z');
 
 				var piqx = (point2D1x + point2D2x) / 2;
 				var piqy = (point2D1y + point2D2y) / 2;
@@ -264,43 +250,42 @@ function checksIfBehind(face,piq)
 		}
 	});
 	function doWork(point1,point2)
-    {
-    	var x3 = point1.x;
+  {
+  	var x3 = point1.x;
 		var y3 = point1.y;
 		var x4 = point2.x;
 		var y4 = point2.y;
+    var x1 = x3 - piq.x;
+    var x2 = x4 - piq.x;
+    var y2 = y4 - piq.y;
+    var y1 = y3 - piq.y;
 
-        var x1 = x3 - piq.x;
-        var x2 = x4 - piq.x;
-        var y2 = y4 - piq.y;
-        var y1 = y3 - piq.y;
-
-        if (x2 - x1 === 0)
-        {
-           x2 += .000000000001
-        }
-        var m = (y2 - y1) / (x2 - x1);
-        var m2 = m * m;
-        var b = y2 - (m * x2);
-        if (b !== 0)
-        {
-            var A = b / (m2 + 1);
-            var arg1 = (x1 + m * b / (m2 + 1)) / A;
-            var arg2 = (x2 + m * b / (m2 + 1)) / A;
-            var dW = -(Math.atan(arg2) - Math.atan(arg1));
-        }
-        else if (b === 0)
-        {
-            dW = 0;
-        }
-
-        work += dW;
-    }
-
-    if(Math.round(work) === 6)
+    if (x2 - x1 === 0)
     {
-    	return true;
+       x2 += .000000000001
     }
+    var m = (y2 - y1) / (x2 - x1);
+    var m2 = m * m;
+    var b = y2 - (m * x2);
+    if (b !== 0)
+    {
+        var A = b / (m2 + 1);
+        var arg1 = (x1 + m * b / (m2 + 1)) / A;
+        var arg2 = (x2 + m * b / (m2 + 1)) / A;
+        var dW = -(Math.atan(arg2) - Math.atan(arg1));
+    }
+    else if (b === 0)
+    {
+        dW = 0;
+    }
+
+    work += dW;
+  }
+
+  if(Math.round(work) === 6)
+  {
+  	return true;
+  }
 }
 function transform(dis1,dis2,dis3,q,xA,yA,zA,XF,YF,ZF,Vx,Vy,Vz)
 {
@@ -325,7 +310,6 @@ function animate()
 	{
 		changeRotAxes();
 	}
-
 }
 
 function createP(q)

@@ -8,7 +8,15 @@
     <p id ="gameOver">Waiting for a second player to connect</p>
     <p id="playerNumber">You are Player</p>
     <button id="reset">Reset</button>
-    <canvas id="c" width="700" height="300"></canvas>
+    <canvas id="c" width="900" height="500"></canvas>
+    <div id="container">
+      <div><button id="moveUp">Move screen up</button></div>
+      <div>
+        <button id="moveLeft">Move screen left</button>
+        <button id="moveRight">Move screen right</button>
+      </div>
+      <div><button id="moveDown">Move screen down</button></div>
+    </div>
     <script src="//code.jquery.com/jquery-1.11.1.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/javascripts/simulator.js"></script>

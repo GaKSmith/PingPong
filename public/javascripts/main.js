@@ -3,6 +3,29 @@ var gravityOn = true;
 var socket = io();
 var randomNumber = Math.random();
 var whoAmI;
+
+(function()
+{
+  var containerW = $("#container").css("width");
+  var canvasH =$("canvas")[0].height;
+  var canvasW = $("canvas")[0].width;
+  var number = "";
+
+  function takeOutLastTwoLetters(word)
+  {
+    for(var i = 0; i < word.length-2;i++)
+    {
+      var letter = word[i];
+      number+= letter;
+    }
+    return number
+  }
+
+  containerW = Number(takeOutLastTwoLetters(containerW));
+  $("#container").css("left",-containerW / 2 + canvasW /2 + "px");
+  $("#container").css("top",canvasH + 100);
+})();
+
 socket.on('connect', function() {
     console.log('Connected!');
   });
@@ -74,6 +97,19 @@ var leftSlow = 0;
 var rightSlow = 0;
 var topSlow = 0;
 var backSlow = 0;
+
+$("#moveLeft").click(function() {
+  origin.y += 10;
+});
+$("#moveRight").click(function() {
+  origin.y += -10;
+});
+$("#moveUp").click(function() {
+  origin.z += 10;
+});
+$("#moveDown").click(function() {
+  origin.z += -10;
+});
 $(document).on("keydown",function(e){
   var keyCode = e.keyCode;
   var phi;
@@ -181,10 +217,10 @@ function sketchDepth()
         var y2 = pObjA[2][0][2].y;
         var z = groundHeight;
 
-        var gy1 = pointConvert(i,y1);
-        var gz1 = pointConvert(i,z);
-        var gy2 = pointConvert(i,y2);
-        var gz2 = pointConvert(i,z);
+        var gy1 = pointConvert(i,y1,'y');
+        var gz1 = pointConvert(i,z,'z');
+        var gy2 = pointConvert(i,y2,'y');
+        var gz2 = pointConvert(i,z,'z');
 
         context.beginPath();
         context.moveTo(gy1 + 100, gz1);
@@ -209,8 +245,8 @@ function shadow()
     var ballX2 = ballMove[1][1].x;
     var ballXAvg = (ballX + ballX2) / 2;
 
-    var g1y = pointConvert(ballX,ballY);
-    var g1z = pointConvert(ballX,groundHeight);
+    var g1y = pointConvert(ballX,ballY,'y');
+    var g1z = pointConvert(ballX,groundHeight,'z');
 
     circle(g1y,g1z,2,2 * PI);
 }

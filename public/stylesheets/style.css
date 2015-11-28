@@ -1,3 +1,28 @@
 canvas{
-    background-color: gray; 
+    background-color: gray;
+    position: absolute;
+    left: 0px;
+    z-index: -1;
+    cursor: url(http://media.baselineresearch.com/images/77934/77934_small.jpg);
 }
+#container{
+  text-align: center;
+  position: absolute;
+}
+
+button {
+   border: 0px outset blue;
+}
+#moveDown{
+  cursor:s-resize;
+}
+#moveUp{
+  cursor:n-resize;
+}
+#moveLeft{
+  cursor:w-resize;
+}
+#moveRight{
+  cursor:e-resize;
+}
+
