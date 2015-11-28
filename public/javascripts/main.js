@@ -57,6 +57,8 @@ $("#reset").click(function(){
     socket.emit("reset");
 });
 
+$("#zoomIn").cl
+
 socket.on("resett",function(){
     location.href = "/";
 });
@@ -109,6 +111,12 @@ $("#moveUp").click(function() {
 });
 $("#moveDown").click(function() {
   origin.z += -10;
+});
+$("#zoomIn").click(function() {
+  origin.x += 10;
+});
+$("#zoomOut").click(function() {
+  origin.x += -10;
 });
 $(document).on("keydown",function(e){
   var keyCode = e.keyCode;

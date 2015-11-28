@@ -11,7 +11,7 @@ canvas{
 }
 
 button {
-   border: 0px outset blue;
+   border: 0px;
 }
 #moveDown{
   cursor:s-resize;
@@ -24,5 +24,11 @@ button {
 }
 #moveRight{
   cursor:e-resize;
+}
+#zoomIn{
+  cursor: zoom-in
+}
+#zoomOut{
+  cursor: zoom-out
 }
 
