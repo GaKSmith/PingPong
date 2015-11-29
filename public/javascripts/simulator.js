@@ -15,7 +15,11 @@ var canvas = document.getElementById("c");
 context = canvas.getContext("2d");
 var clickState = 0;
 var origin = {x:0,y:0,z:0};
-origin.z = -380;
+// origin.z = -380;
+origin.x = 240;
+origin.y = 50;
+origin.z = -80;
+
 
 function copy(arr)
 {
@@ -49,7 +53,7 @@ function displacer (q,d1,d2,d3)
 	return q;
 }
 
-function cuboidMaker(width,length,height)
+function cuboidMaker(length,width,height)
 {
 	var face1 = [{x:0,y:0,z:0},{x:0,y:width,z:0},{x:0,y:width,z:height},{x:0,y:0,z:height},{x:0,y:0,z:0}];
 	var face2 = [{x:0,y:width,z:0}, {x:length,y:width,z:0},{x:length,y:width,z:height},{x:0,y:width,z:height},{x:0,y:width,z:0}];
@@ -156,6 +160,7 @@ function move(pA)
 
 function pointConvert(x,w,l)
 {
+  //l takes on either a value of y or z
   x -= origin.x;
   w -= origin[l];
 	return  w * D / (x + D);

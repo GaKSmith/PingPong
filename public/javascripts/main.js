@@ -57,8 +57,6 @@ $("#reset").click(function(){
     socket.emit("reset");
 });
 
-$("#zoomIn").cl
-
 socket.on("resett",function(){
     location.href = "/";
 });
@@ -194,10 +192,10 @@ var paddleHeight = 50;
 var paddleWidth = 50;
 var paddleDepth = 10;
 var ballHeight = 10;
-var paddle3d = cuboidMaker(paddleWidth,paddleDepth,paddleHeight);
+var paddle3d = cuboidMaker(paddleDepth,paddleWidth,paddleHeight);
 var ball3d = cuboidMaker(10,10,10);
-var test3dHeight = 10;
-var test3d = cuboidMaker(10,100,test3dHeight);
+var test3dHeight = 100;
+var test3d = cuboidMaker(10,10,test3dHeight);
 var tableWidth = 500;
 var tableHeight = 5;
 var tableDepth = 500;
@@ -206,12 +204,15 @@ var enemyPaddle = cuboidMaker(paddleWidth,paddleDepth,paddleHeight);
 var player1Score = 0;
 var player2Score = 0;
 
-var table = cuboidMaker(tableWidth,tableDepth,tableHeight);
+var axisRot = {x:null,y:null,z:null};
+
+var table = cuboidMaker(tableDepth,tableWidth,tableHeight);
 transform(25,0,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
 transform(400,0,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,0,0,0);
 transform(25,0,groundHeight,table,0,0,0,1000,1000,500,0,0,0);
 transform(tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
-// transform(tableDepth,100,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
+transform(tableDepth,100,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
+transform(tableDepth,100 + tableWidth,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 // transform(100,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 // transform(250,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
 var ballMove = pObjA[1];
