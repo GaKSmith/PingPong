@@ -26,13 +26,13 @@ function copy(arr)
 	return arr.concat([]);
 }
 
-function miniRotate(dis1,dis2,dis3,q,xA,yA,zA,XF,YF,ZF,theta)
+function miniRotate(q,xA,yA,zA,xF,yF,zF,theta)
 {
 	console.log("Minirotate was called");
 	var objArray = [];
 	objArray.push(q);
 	var vMini = []
-	vMini.push({xA:xA,yA:yA,zA:zA,d1:dis1,d2:dis2,d3:dis3,xF:XF,yF:YF,zF:ZF});
+	vMini.push({xA:xA,yA:yA,zA:zA,xF:xF,yF:yF,zF:zF});
 	var holder = dTheta;
 	dTheta = theta;
 	turn(objArray,vMini)
@@ -44,9 +44,9 @@ function displacer (q,d1,d2,d3)
 	q.forEach(function(qSubA){
 		qSubA.forEach(function(qPoint){
 
-			qPoint.x = qPoint.x + d1;
-			qPoint.y = qPoint.y + d2;
-			qPoint.z = qPoint.z + d3;
+			qPoint.x += d1;
+			qPoint.y += d2;
+			qPoint.z += d3;
 		});
 	});
 
@@ -127,12 +127,12 @@ function turn (objA,pProp)
 				pPoint.x = zRot.a;
 				pPoint.y = zRot.b;
 
-				function mathTurn(A,F1,F2,v1,v2,v3)
+				function mathTurn(A,F1,F2,v1,v2)
 				{
 					var prime1 = (v1 - F1) * Math.cos(A * dTheta) - (v2 - F2) * Math.sin(A * dTheta) + F1;
 					var prime2 = (v2 - F2) * Math.cos(A * dTheta) + (v1 - F1) * Math.sin(A * dTheta) + F2;
 
-					return {a:prime1,b:prime2,z: v3};
+					return {a:prime1,b:prime2};
 				}
 			});
 		});
@@ -160,10 +160,27 @@ function move(pA)
 
 function pointConvert(x,w,l)
 {
-  //l takes on either a value of y or z
+  //l takes on either a value of 'y' or 'z'
   x -= origin.x;
   w -= origin[l];
-	return  w * D / (x + D);
+  var xTemp = (x - axisRot.x) * Math.cos(thetaView) - (w - axisRot[l]) * Math.sin(thetaView) + axisRot.x;
+  if (l === 'z')
+  {
+
+    var wTemp = (w - axisRot[l]) * Math.cos(thetaView) + (x - axisRot.x) * Math.sin(thetaView) + axisRot[l];
+    return  wTemp * D / (xTemp + D);
+  }
+  else
+  {
+    return  w * D / (xTemp + D);
+  }
+
+
+  // var prime1 = (v1 - F1) * Math.cos(A * dTheta) - (v2 - F2) * Math.sin(A * dTheta) + F1;
+  // var prime2 = (v2 - F2) * Math.cos(A * dTheta) + (v1 - F1) * Math.sin(A * dTheta) + F2;
+
+
+
 }
 
 function draw(pA)
@@ -301,6 +318,10 @@ function transform(dis1,dis2,dis3,q,xA,yA,zA,XF,YF,ZF,Vx,Vy,Vz)
 function animate()
 {
 	theta += dTheta;
+  if (michaelBay)
+  {
+    thetaView += PI / 256;
+  }
 	t += .01;
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	move(pObjA);
@@ -336,4 +357,10 @@ function createP(q)
 }
 
 var interval = setInterval(animate, 1000 / 20);
+// setInterval(function(){
+//   if (michaelBay)
+//   {
+//     thetaView += PI / 32;
+//   }
+// },500);
 
