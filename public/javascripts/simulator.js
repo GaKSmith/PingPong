@@ -6,7 +6,6 @@ var t = 0;
 var counter = 0;
 var PI = Math.PI;
 var dTheta = PI/256;
-var theta = 0;
 
 var sphere2 = [];
 sphere2 = sphereMaker(100);
@@ -105,11 +104,11 @@ function turn (objA,pProp)
 
 		var pPrime = [];
 
-		p.forEach(function(pSubA,m){
+		p.forEach(function(face,m){
 
 			var proxyArray = [];
 			pPrime.push(proxyArray);
-			pSubA.forEach(function(pPoint,n){
+			face.forEach(function(pPoint,n){
 				var prop = pProp[l];
 
 				var xRot = mathTurn(prop.xA,prop.yF,prop.zF,pPoint.y,pPoint.z);
@@ -127,6 +126,11 @@ function turn (objA,pProp)
 				pPoint.x = zRot.a;
 				pPoint.y = zRot.b;
 
+        if (counter2 < 100 && pProp[0].zA === 1)
+        {
+          counter2 ++;
+          console.log("regular turn ","x is ",pPoint.x,"y is ",pPoint.y);
+        }
 				function mathTurn(A,F1,F2,v1,v2)
 				{
 					var prime1 = (v1 - F1) * Math.cos(A * dTheta) - (v2 - F2) * Math.sin(A * dTheta) + F1;
@@ -146,48 +150,50 @@ function move(pA)
 		var propV = pProp[l];
 
 		pObject.forEach(function(pSubA){
-
 			pSubA.forEach(function(pPoint){
 
-				pPoint.x = pPoint.x + propV.x;
-				pPoint.y = pPoint.y + propV.y;
-				pPoint.z = pPoint.z + propV.z;
+				pPoint.x += propV.x;
+				pPoint.y += propV.y;
+				pPoint.z += propV.z;
 			});
 		});
 		l++;
 	});
 }
-
+var counter = 0;
+var counter2 = 0;
+var nextX;
 function pointConvert(x,w,l)
 {
   //l takes on either a value of 'y' or 'z'
   x -= origin.x;
   w -= origin[l];
-  var xTemp = (x - axisRot.x) * Math.cos(thetaView) - (w - axisRot[l]) * Math.sin(thetaView) + axisRot.x;
-  if (l === 'z')
-  {
 
-    var wTemp = (w - axisRot[l]) * Math.cos(thetaView) + (x - axisRot.x) * Math.sin(thetaView) + axisRot[l];
+// var prime1 = (v1 - F1) * Math.cos(A * dTheta) - (v2 - F2) * Math.sin(A * dTheta) + F1;
+//           var prime2 = (v2 - F2) * Math.cos(A * dTheta) + (v1 - F1) * Math.sin(A * dTheta) + F2;
+
+  if (l === 'y')
+  {
+    xTemp = ((x - axisRot.x) * Math.cos(thetaView) - (w - axisRot[l]) * Math.sin(thetaView)) + axisRot.x;
+    var wTemp = ((w - axisRot[l]) * Math.cos(thetaView) + (x - axisRot.x) * Math.sin(thetaView)) + axisRot[l];
+    if (counter < 1000 && michaelBay)
+    {
+      counter++;
+      console.log("x is ",xTemp," ",l," is ",wTemp);
+    }
     return  wTemp * D / (xTemp + D);
   }
   else
   {
     return  w * D / (xTemp + D);
   }
-
-
-  // var prime1 = (v1 - F1) * Math.cos(A * dTheta) - (v2 - F2) * Math.sin(A * dTheta) + F1;
-  // var prime2 = (v2 - F2) * Math.cos(A * dTheta) + (v1 - F1) * Math.sin(A * dTheta) + F2;
-
-
-
 }
 
 function draw(pA)
 {
 	function graphPart2(faceArray2d,piq)
 	{
-		if (checksIfBehind(faceArray2d,piq))
+		// if (checksIfBehind(faceArray2d,piq))
 		{
 			faceArray2d.forEach(function(point2d,index){
 				if(index === faceArray2d.length -1)
@@ -236,21 +242,21 @@ function draw(pA)
 					var gy1 = pointConvert(pFace[n].x,pFace[n].y,'y');
 					var gz1 = pointConvert(pFace[n].x,pFace[n].z,'z');
 					face2d.push({x : gy1, y : gz1});
-
-					// graph(x1,y1,z1,x2,y2,z2);
 				}
         //the following is for finding the point in the middle of the face which will be used for determining
         //orientation of the face
-				var point2D1x = pointConvert(pFace[0].x,pFace[0].y,'y');
-				var point2D1y = pointConvert(pFace[0].x,pFace[0].z,'z');
-				var point2D2x = pointConvert(pFace[2].x,pFace[2].y,'y');
-				var point2D2y = pointConvert(pFace[2].x,pFace[2].z,'z');
+				// var point2D1x = pointConvert(pFace[0].x,pFace[0].y,'y');
+				// var point2D1y = pointConvert(pFace[0].x,pFace[0].z,'z');
+				// var point2D2x = pointConvert(pFace[2].x,pFace[2].y,'y');
+				// var point2D2y = pointConvert(pFace[2].x,pFace[2].z,'z');
 
-				var piqx = (point2D1x + point2D2x) / 2;
-				var piqy = (point2D1y + point2D2y) / 2;
+				// var piqx = (point2D1x + point2D2x) / 2;
+				// var piqy = (point2D1y + point2D2y) / 2;
 
-				checksIfBehind(face2d,{x : piqx, y: piqy});
-				graphPart2(face2d,{x:piqx,y:piqy});
+				// checksIfBehind(face2d,{x : piqx, y: piqy});
+				// graphPart2(face2d,{x:piqx,y:piqy});
+                graphPart2(face2d);
+
 		});
 	});
 }
@@ -317,7 +323,6 @@ function transform(dis1,dis2,dis3,q,xA,yA,zA,XF,YF,ZF,Vx,Vy,Vz)
 
 function animate()
 {
-	theta += dTheta;
   if (michaelBay)
   {
     thetaView += PI / 256;
@@ -327,11 +332,11 @@ function animate()
 	move(pObjA);
 	turn(pObjA,pProp);
 	draw(pObjA);
-	gravity();
-	intersectionChecker();
-	sketchDepth();
-	shadow();
-	gameOver1();
+	// gravity();
+	// intersectionChecker();
+	// sketchDepth();
+	// shadow();
+	// gameOver1();
 	if (adjustAxes)
 	{
 		changeRotAxes();

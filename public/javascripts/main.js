@@ -27,8 +27,8 @@ var whoAmI;
 })();
 
 socket.on('connect', function() {
-    console.log('Connected!');
-  });
+  console.log('Connected!');
+});
 
 socket.on("initial response",function(){
     socket.emit("determine first",randomNumber);
@@ -103,22 +103,22 @@ $("#michaelBay").click(function(){
 });
 
 $("#moveLeft").click(function() {
-  origin.y += 10;
+  origin.y += 11;
 });
 $("#moveRight").click(function() {
-  origin.y += -10;
+  origin.y += -11;
 });
 $("#moveUp").click(function() {
-  origin.z += 10;
+  origin.z += 12;
 });
 $("#moveDown").click(function() {
-  origin.z += -10;
+  origin.z += -12;
 });
 $("#zoomIn").click(function() {
-  origin.x += 10;
+  origin.x += 13;
 });
 $("#zoomOut").click(function() {
-  origin.x += -10;
+  origin.x += -13;
 });
 $(document).on("keydown",function(e){
   var keyCode = e.keyCode;
@@ -194,13 +194,13 @@ function changeRotAxes()
 }
 var paddleHeight = 50;
 var paddleWidth = 50;
-var paddleDepth = 10;
-var ballHeight = 10;
+var paddleDepth = 11;
+var ballHeight = 12;
 var paddle3d = cuboidMaker(paddleDepth,paddleWidth,paddleHeight);
-var ball3d = cuboidMaker(10,10,10);
+var ball3d = cuboidMaker(13,14,15);
 var test3dHeight = 100;
-var test3d = cuboidMaker(10,10,test3dHeight);
-var test3d2 = cuboidMaker(10,10,test3dHeight / 2);
+var test3d = cuboidMaker(16,17,test3dHeight);
+var test3d2 = cuboidMaker(18,19,test3dHeight / 2);
 var tableWidth = 500;
 var tableHeight = 5;
 var tableDepth = 500;
@@ -221,15 +221,14 @@ axisRot.y = initTablePos.y + tableWidth / 2;
 axisRot.z = initTablePos.z + tableHeight / 2;
 
 
-transform(25,0,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
-transform(400,0,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,0,0,0);
-transform(initTablePos.x,initTablePos.y,groundHeight,table,0,0,0,1000,1000,500,0,0,0);
-transform(initTablePos.x + tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,500,0,0,0);
-transform(initTablePos.x,initTablePos.y,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
-transform(initTablePos.x + tableDepth,initTablePos.y,groundHeight - test3dHeight / 2,test3d2,0,0,0,1000,1000,500,0,0,0);
-// transform(tableDepth,0 + tableWidth,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
-// transform(100,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
-// transform(250,100,groundHeight -test3dHeight,test3d,0,0,0,1000,1000,500,0,0,0);
+// transform(25,0,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,0,0,0,0);
+// transform(400,0,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,0,0,0,0);
+transform(initTablePos.x,initTablePos.y,groundHeight,table,0,0,0,0,0,0,0,0,0);
+// transform(initTablePos.x + tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,0,0,0,0);
+// transform(initTablePos.x + tableDepth /2,initTablePos.y + tableWidth /2 ,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,0,0,0,0);
+// transform(initTablePos.x + tableDepth,initTablePos.y,groundHeight - test3dHeight / 2,test3d2,0,0,0,1000,1000,0,0,0,0);
+// transform(tableDepth,0 + tableWidth,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,0,0,0,0);
+
 var ballMove = pObjA[1];
 
 function sketchDepth()
@@ -408,13 +407,13 @@ function intersectionChecker()
 }
 function gameOver1()
 {
-    if (player1Score === 10)
+    if (player1Score === 11)
     {
         pProp[1].x = 0;
         pProp[1].y = 0;
         $("#gameOver").text("Game over!!! Player 1 is the winner");
     }
-    else if (player2Score === 10)
+    else if (player2Score === 12)
     {
         pProp[1].x = 0;
         pProp[1].y = 0;
