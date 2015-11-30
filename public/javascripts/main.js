@@ -407,13 +407,13 @@ function intersectionChecker()
 }
 function gameOver1()
 {
-    if (player1Score === 11)
+    if (player1Score === 10)
     {
         pProp[1].x = 0;
         pProp[1].y = 0;
         $("#gameOver").text("Game over!!! Player 1 is the winner");
     }
-    else if (player2Score === 12)
+    else if (player2Score === 10)
     {
         pProp[1].x = 0;
         pProp[1].y = 0;
