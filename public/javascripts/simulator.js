@@ -19,7 +19,6 @@ origin.x = 240;
 origin.y = 50;
 origin.z = -80;
 
-
 function copy(arr)
 {
 	return arr.concat([]);

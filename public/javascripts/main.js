@@ -9,21 +9,30 @@ var whoAmI;
   var containerW = $("#container").css("width");
   var canvasH =$("canvas")[0].height;
   var canvasW = $("canvas")[0].width;
-  var number = "";
+  var buttonRightRot = $("#rotateRight").css("width");
+  var buttonLeftRot = $("#rotateLeft").css("width");
 
   function takeOutLastTwoLetters(word)
   {
+    var number = "";
     for(var i = 0; i < word.length-2;i++)
     {
       var letter = word[i];
-      number+= letter;
+      number += letter;
     }
     return number
   }
 
-  containerW = Number(takeOutLastTwoLetters(containerW));
-  $("#container").css("left",-containerW / 2 + canvasW /2 + "px");
+  var containerW = Number(takeOutLastTwoLetters(containerW));
+  var rotRightW = Number(takeOutLastTwoLetters(buttonRightRot));
+  var rotLeftW = Number(takeOutLastTwoLetters(buttonLeftRot));
+
+  $("#container").css("left",-containerW / 2 + canvasW / 2 + "px");
   $("#container").css("top",canvasH + 100);
+  $("#rotateRight").css("left",canvasW / 2 + 300 - rotRightW / 2 + "px");
+  $("#rotateLeft").css("left",canvasW / 2 - 300 - rotLeftW / 2 + "px");
+  $(".rotate").css("top","650px");
+
 })();
 
 socket.on('connect', function() {
@@ -34,64 +43,64 @@ socket.on("initial response",function(){
     socket.emit("determine first",randomNumber);
 });
 socket.on("send array",function(keyArray){
-    keyArray.forEach(function(key,index){
-        if (key === randomNumber)
-        {
-            whoAmI = index + 1;
-            if (whoAmI === 1)
-            {
-                playerIndex = 0;
-            }
-            else if (whoAmI === 2)
-            {
-                playerIndex = 3;
-            }
-            $("#playerNumber").append(whoAmI);
-            pProp[1].x = -5;
-            pProp[1].y = 2;
-        }
-    });
-    $("#gameOver").text("Play some pong!!!");
+  keyArray.forEach(function(key,index){
+    if (key === randomNumber)
+    {
+      whoAmI = index + 1;
+      if (whoAmI === 1)
+      {
+          playerIndex = 0;
+      }
+      else if (whoAmI === 2)
+      {
+          playerIndex = 3;
+      }
+      $("#playerNumber").append(whoAmI);
+      pProp[1].x = -5;
+      pProp[1].y = 2;
+    }
+  });
+  $("#gameOver").text("Play some pong!!!");
 });
 $("#reset").click(function(){
-    socket.emit("reset");
+  socket.emit("reset");
 });
 
 socket.on("resett",function(){
-    location.href = "/";
+  location.href = "/";
 });
 
 socket.on("state request",function(){
-    if(whoAmI === 1)
-    {
-        socket.emit("send paddles",pObjA[0],pProp[0],randomNumber);
-    }
-    else if (whoAmI === 2)
-    {
-        socket.emit("send paddles",pObjA[3],pProp[3],randomNumber);
-    }
-    // socket.emit("send paddles",pObjA[playerIndex],pProp[playerIndex],randomNumber);
+  if(whoAmI === 1)
+  {
+    socket.emit("send paddles",pObjA[0],pProp[0],randomNumber);
+  }
+  else if (whoAmI === 2)
+  {
+    socket.emit("send paddles",pObjA[3],pProp[3],randomNumber);
+  }
+  // socket.emit("send paddles",pObjA[playerIndex],pProp[playerIndex],randomNumber);
 });
 
 socket.on("update enemy",function(paddleObj,paddleProp,key){
-    if (key !== randomNumber)
-    {
-        paddleObj.forEach(function(face,faceIndex){
-            face.forEach(function(point,pointIndex){
-                for (coordinate in point)
-                {
-                    if (whoAmI === 1)
-                    {
-                        pObjA[3][faceIndex][pointIndex][coordinate] = point[coordinate];
-                    }
-                    else if (whoAmI === 2)
-                    {
-                        pObjA[0][faceIndex][pointIndex][coordinate] = point[coordinate];
-                    }
-                }
-            });
-        });
-    }
+  if (key !== randomNumber)
+  {
+    paddleObj.forEach(function(face,faceIndex){
+      face.forEach(function(point,pointIndex){
+        for (coordinate in point)
+        {
+          if (whoAmI === 1)
+          {
+            pObjA[3][faceIndex][pointIndex][coordinate] = point[coordinate];
+          }
+          else if (whoAmI === 2)
+          {
+            pObjA[0][faceIndex][pointIndex][coordinate] = point[coordinate];
+          }
+        }
+      });
+    });
+  }
 });
 var leftSlow = 0;
 var rightSlow = 0;
@@ -100,6 +109,12 @@ var backSlow = 0;
 var michaelBay = false;
 $("#michaelBay").click(function(){
   michaelBay = !michaelBay;
+});
+$("#rotateLeft").click(function() {
+  thetaView += PI / 128;
+});
+$("#rotateRight").click(function() {
+  thetaView -= PI / 128;
 });
 
 $("#moveLeft").click(function() {
