@@ -9,18 +9,22 @@
     <p id="playerNumber">You are Player</p>
     <button id="reset">Reset</button>
     <button id="michaelBay">Michael Bay Mode</button>
-    <canvas id="c" width="900" height="500"></canvas>
-    <div id="container">
-      <div><button id="zoomIn">Zoom In</button></div>
-      <div><button id="moveUp">Move screen up</button></div>
-      <div>
-        <button id="moveLeft">Move screen left</button>
-        <button id="moveRight">Move screen right</button>
+    <canvas id="c" width="900" class="absolute" height="500"></canvas>
+    <button id="rotateLeft" class="absolute rotate">Rotate Left</button>
+    <span>
+      <div id="container" class="absolute">
+        <div><button id="zoomIn">Zoom In</button></div>
+        <div><button id="moveUp">Move screen up</button></div>
+        <div>
+          <button id="moveLeft">Move screen left</button>
+          <button id="moveRight">Move screen right</button>
+        </div>
+        <div><button id="moveDown">Move screen down</button></div>
+        <div><button id="zoomOut">Zoom Out</button></div>
       </div>
-      <div><button id="moveDown">Move screen down</button></div>
-      <div><button id="zoomOut">Zoom Out</button></div>
-    </div>
-    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    </span>
+    <button id="rotateRight" class="absolute rotate">Rotate right</button>
+    <script src="javascripts/jquery-1.11.3.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/javascripts/simulator.js"></script>
     <script src="/javascripts/main.js"></script>

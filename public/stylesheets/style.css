@@ -1,17 +1,15 @@
 canvas{
     background-color: gray;
-    position: absolute;
     left: 0px;
     z-index: -1;
     cursor: url(http://media.baselineresearch.com/images/77934/77934_small.jpg);
 }
 #container{
   text-align: center;
-  position: absolute;
 }
 
 button {
-   border: 0px;
+  border: 0px;
 }
 #moveDown{
   cursor:s-resize;
@@ -31,4 +29,6 @@ button {
 #zoomOut{
   cursor: zoom-out
 }
-
+.absolute{
+  position: absolute;
+}
