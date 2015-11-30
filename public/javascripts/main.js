@@ -374,6 +374,7 @@ function intersectionChecker()
     var paddleZ = pObjA[0][0][0].z;
     var dragonBallZ = pObjA[1][0][2].z;
     var paddleY = pObjA[0][0][0].y;
+    var paddleY2 = pObjA[0][0][2].y;
     var ballY = pObjA[1][0][2].y;
 
     var paddleFarX = pObjA[3][0][0].x;
@@ -381,11 +382,15 @@ function intersectionChecker()
     var paddleFarZ = pObjA[3][0][0].z;
 
     var ballProp = pProp[1];
+    var smallPaddleY = Math.min(paddleY,paddleY2);
+    var bigPaddleY = Math.max(paddleY,paddleY2);
 
-    if ((ballX < paddleX + paddleDepth && ballX > paddleX) && dragonBallZ > paddleZ && (ballY > paddleY && ballY < paddleY + paddleWidth))
+
+
+    if (dragonBallZ > paddleZ && (ballY > smallPaddleY && ballY < bigPaddleY)) //(ballX < paddleX + paddleDepth && ballX > paddleX)  &&
     {
         ballProp.x *= -1;
-        console.log("ballX is ",ballX,"paddleX ",paddleX);
+        // console.log("ballX is ",ballX,"paddleX ",paddleX);
     }
     else if ((ballX < paddleFarX + paddleDepth && ballX > paddleFarX) && (ballY > paddleFarY && ballY < paddleFarY + paddleWidth) &&(dragonBallZ > paddleFarZ))
     {
