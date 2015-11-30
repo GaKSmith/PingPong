@@ -356,10 +356,3 @@ function createP(q)
 }
 
 var interval = setInterval(animate, 1000 / 20);
-// setInterval(function(){
-//   if (michaelBay)
-//   {
-//     thetaView += PI / 32;
-//   }
-// },500);
-
