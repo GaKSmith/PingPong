@@ -169,9 +169,6 @@ function pointConvert(x,w,l)
   x -= origin.x;
   w -= origin[l];
 
-// var prime1 = (v1 - F1) * Math.cos(A * dTheta) - (v2 - F2) * Math.sin(A * dTheta) + F1;
-//           var prime2 = (v2 - F2) * Math.cos(A * dTheta) + (v1 - F1) * Math.sin(A * dTheta) + F2;
-
   if (l === 'y')
   {
     xTemp = ((x - axisRot.x) * Math.cos(thetaView) - (w - axisRot[l]) * Math.sin(thetaView)) + axisRot.x;
@@ -193,7 +190,7 @@ function draw(pA)
 {
 	function graphPart2(faceArray2d,piq)
 	{
-		// if (checksIfBehind(faceArray2d,piq))
+		if (checksIfBehind(faceArray2d,piq))
 		{
 			faceArray2d.forEach(function(point2d,index){
 				if(index === faceArray2d.length -1)
@@ -226,37 +223,35 @@ function draw(pA)
 
 	pA.forEach(function(pObject,l){              //pA - Array of objects
 		pObject.forEach(function(pFace,m){         //pObject Physical object
-				work = 0;
-				var face2d = [];
-				for(var n = 0; n < pFace.length - 1; n ++)
-				{
-					var pPoint = pFace[n];
-					var pPoint1 =  pFace[n + 1];
-					var x1 = pPoint.x;
-					var x2 = pPoint1.x;
-					var y1 = pPoint.y;
-					var y2 = pPoint1.y
-					var z1 = pPoint.z;
-					var z2 = pPoint1.z;
+			work = 0;
+			var face2d = [];
+			for(var n = 0; n < pFace.length - 1; n ++)
+			{
+				var pPoint = pFace[n];
+				var pPoint1 =  pFace[n + 1];
+				var x1 = pPoint.x;
+				var x2 = pPoint1.x;
+				var y1 = pPoint.y;
+				var y2 = pPoint1.y
+				var z1 = pPoint.z;
+				var z2 = pPoint1.z;
 
-					var gy1 = pointConvert(pFace[n].x,pFace[n].y,'y');
-					var gz1 = pointConvert(pFace[n].x,pFace[n].z,'z');
-					face2d.push({x : gy1, y : gz1});
-				}
-        //the following is for finding the point in the middle of the face which will be used for determining
-        //orientation of the face
-				// var point2D1x = pointConvert(pFace[0].x,pFace[0].y,'y');
-				// var point2D1y = pointConvert(pFace[0].x,pFace[0].z,'z');
-				// var point2D2x = pointConvert(pFace[2].x,pFace[2].y,'y');
-				// var point2D2y = pointConvert(pFace[2].x,pFace[2].z,'z');
+				var gy1 = pointConvert(pFace[n].x,pFace[n].y,'y');
+				var gz1 = pointConvert(pFace[n].x,pFace[n].z,'z');
+				face2d.push({x : gy1, y : gz1});
+			}
+      //the following is for finding the point in the middle of the face which will be used for determining
+      //orientation of the face
+			var point2D1x = pointConvert(pFace[0].x,pFace[0].y,'y');
+			var point2D1y = pointConvert(pFace[0].x,pFace[0].z,'z');
+			var point2D2x = pointConvert(pFace[2].x,pFace[2].y,'y');
+			var point2D2y = pointConvert(pFace[2].x,pFace[2].z,'z');
 
-				// var piqx = (point2D1x + point2D2x) / 2;
-				// var piqy = (point2D1y + point2D2y) / 2;
+			var piqx = (point2D1x + point2D2x) / 2;
+			var piqy = (point2D1y + point2D2y) / 2;
 
-				// checksIfBehind(face2d,{x : piqx, y: piqy});
-				// graphPart2(face2d,{x:piqx,y:piqy});
-                graphPart2(face2d);
-
+			checksIfBehind(face2d,{x : piqx, y: piqy});
+			graphPart2(face2d,{x:piqx,y:piqy});
 		});
 	});
 }
@@ -297,14 +292,14 @@ function checksIfBehind(face,piq)
     var b = y2 - (m * x2);
     if (b !== 0)
     {
-        var A = b / (m2 + 1);
-        var arg1 = (x1 + m * b / (m2 + 1)) / A;
-        var arg2 = (x2 + m * b / (m2 + 1)) / A;
-        var dW = -(Math.atan(arg2) - Math.atan(arg1));
+      var A = b / (m2 + 1);
+      var arg1 = (x1 + m * b / (m2 + 1)) / A;
+      var arg2 = (x2 + m * b / (m2 + 1)) / A;
+      var dW = -(Math.atan(arg2) - Math.atan(arg1));
     }
     else if (b === 0)
     {
-        dW = 0;
+      dW = 0;
     }
 
     work += dW;
@@ -332,11 +327,11 @@ function animate()
 	move(pObjA);
 	turn(pObjA,pProp);
 	draw(pObjA);
-	// gravity();
-	// intersectionChecker();
-	// sketchDepth();
-	// shadow();
-	// gameOver1();
+	gravity();
+	intersectionChecker();
+	sketchDepth();
+	shadow();
+	gameOver1();
 	if (adjustAxes)
 	{
 		changeRotAxes();

@@ -208,7 +208,7 @@ var groundHeight = 100;
 var enemyPaddle = cuboidMaker(paddleWidth,paddleDepth,paddleHeight);
 var player1Score = 0;
 var player2Score = 0;
-var initTablePos = {x:250,y:0,z:groundHeight}
+var initTablePos = {x:25,y:0,z:groundHeight}
 var thetaView = 0;
 var phiView = 0;
 
@@ -221,10 +221,10 @@ axisRot.y = initTablePos.y + tableWidth / 2;
 axisRot.z = initTablePos.z + tableHeight / 2;
 
 
-// transform(25,0,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,0,0,0,0);
-// transform(400,0,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,0,0,0,0);
+transform(25,0,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,0,0,0,0);
+transform(400,0,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,0,0,0,0);
 transform(initTablePos.x,initTablePos.y,groundHeight,table,0,0,0,0,0,0,0,0,0);
-// transform(initTablePos.x + tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,0,0,0,0);
+transform(initTablePos.x + tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,0,0,0,0);
 // transform(initTablePos.x + tableDepth /2,initTablePos.y + tableWidth /2 ,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,0,0,0,0);
 // transform(initTablePos.x + tableDepth,initTablePos.y,groundHeight - test3dHeight / 2,test3d2,0,0,0,1000,1000,0,0,0,0);
 // transform(tableDepth,0 + tableWidth,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,0,0,0,0);
