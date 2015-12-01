@@ -115,6 +115,20 @@ function calculateTheta()
   heroPaddleTheta = Math.atan2(delX,delY);
   $("#theta").text(heroPaddleTheta);
 }
+var outOfBounds = false;
+function checkOutOfBounds()
+{
+  var leftOut = pObjA[1][0][2].y < initTablePos.y && pObjA[1][1][2].x > initTablePos.x && pObjA[1][0][0].x < initTablePos.x + tableDepth
+  var rightOut = pObjA[1][0][0].y > initTablePos.y + tableWidth && pObjA[1][1][2].x > initTablePos.x && pObjA[1][0][0].x < initTablePos.x + tableDepth
+  if (leftOut || rightOut)
+  {
+    outOfBounds = true;
+  }
+  if (outOfBounds)
+  {
+    $("#out").text("The ball is out");
+  }
+}
 
 $("#michaelBay").click(function(){
   michaelBay = !michaelBay;
@@ -247,7 +261,7 @@ axisRot.z = initTablePos.z + tableHeight / 2;
 
 
 transform(25,0,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,0,0,0,0);
-transform(400,0,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,0,0,0,0);
+transform(400,tableWidth / 2,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,0,0,0,0);
 transform(initTablePos.x,initTablePos.y,groundHeight,table,0,0,0,0,0,0,0,0,0);
 transform(initTablePos.x + tableDepth,100,groundHeight - paddleHeight,paddle3d,0,0,0,1000,1000,0,0,0,0);
 // transform(initTablePos.x + tableDepth /2,initTablePos.y + tableWidth /2 ,groundHeight - test3dHeight,test3d,0,0,0,1000,1000,0,0,0,0);
@@ -412,7 +426,7 @@ function intersectionChecker()
 
   if ((ballX > smallPaddleX  && ballX < bigPaddleX) && (ballY > smallPaddleY && ballY < bigPaddleY) && dragonBallZ > paddleZ)
   {
-    console.log("Intersection happened! ", heroPaddleTheta, " theta");
+    console.log("Intersection happened! ","theta ",heroPaddleTheta);
     var R = Math.abs(ballProp.x);
     ballProp.x *= -1;
     var r2y = -R * Math.cos(PI/2 - 2 * heroPaddleTheta);

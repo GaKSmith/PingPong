@@ -311,6 +311,7 @@ function animate()
   }
 	t += .01;
 	context.clearRect(0, 0, canvas.width, canvas.height);
+  checkOutOfBounds();
 	move(pObjA);
 	turn(pObjA,pProp);
 	draw(pObjA);
