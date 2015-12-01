@@ -57,7 +57,7 @@ socket.on("send array",function(keyArray){
       }
       $("#playerNumber").append(whoAmI);
       pProp[1].x = -5;
-      pProp[1].y = 2;
+      // pProp[1].y = 2;
     }
   });
   $("#gameOver").text("Play some pong!!!");
@@ -107,6 +107,15 @@ var rightSlow = 0;
 var topSlow = 0;
 var backSlow = 0;
 var michaelBay = false;
+
+function calculateTheta()
+{
+  var delX = pObjA[0][0][1].x - pObjA[0][0][0].x;
+  var delY = pObjA[0][0][1].y - pObjA[0][0][0].y;
+  heroPaddleTheta = Math.atan2(delX,delY);
+  $("#theta").text(heroPaddleTheta);
+}
+
 $("#michaelBay").click(function(){
   michaelBay = !michaelBay;
 });
@@ -403,7 +412,16 @@ function intersectionChecker()
 
   if ((ballX > smallPaddleX  && ballX < bigPaddleX) && (ballY > smallPaddleY && ballY < bigPaddleY) && dragonBallZ > paddleZ)
   {
+    console.log("Intersection happened! ", heroPaddleTheta, " theta");
+    var R = Math.abs(ballProp.x);
     ballProp.x *= -1;
+    var r2y = -R * Math.cos(PI/2 - 2 * heroPaddleTheta);
+    var r2x = R * Math.sin(PI/2 - 2 * heroPaddleTheta);
+    console.log("new x velocity ",r2x,"new y velocity ",r2y);
+    ballProp.x = r2x;
+    ballProp.y = r2y;
+
+
   }
   else if ((ballX > smallFarPaddleX && ballX < bigFarPaddleX) && (ballY > smallFarPaddleY && ballY < bigFarPaddleY) &&(dragonBallZ > paddleFarZ))
   {
@@ -414,7 +432,7 @@ function intersectionChecker()
     player1Score ++;
     var tempArray = pObjA.splice(0,2);
     tempArray.pop();
-    transform(300,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
+    transform(300,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,0,0);
     pProp[1].x = -5;
     pProp.pop();
     tempArray.push(pObjA.pop());

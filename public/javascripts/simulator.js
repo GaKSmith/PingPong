@@ -125,11 +125,6 @@ function turn (objA,pProp)
 				pPoint.x = zRot.a;
 				pPoint.y = zRot.b;
 
-        if (counter2 < 100 && pProp[0].zA === 1)
-        {
-          counter2 ++;
-          console.log("regular turn ","x is ",pPoint.x,"y is ",pPoint.y);
-        }
 				function mathTurn(A,F1,F2,v1,v2)
 				{
 					var prime1 = (v1 - F1) * Math.cos(A * dTheta) - (v2 - F2) * Math.sin(A * dTheta) + F1;
@@ -159,9 +154,7 @@ function move(pA)
 		l++;
 	});
 }
-var counter = 0;
-var counter2 = 0;
-var nextX;
+
 function pointConvert(x,w,l)
 {
   //l takes on either a value of 'y' or 'z'
@@ -172,11 +165,6 @@ function pointConvert(x,w,l)
   {
     xTemp = ((x - axisRot.x) * Math.cos(thetaView) - (w - axisRot[l]) * Math.sin(thetaView)) + axisRot.x;
     var wTemp = ((w - axisRot[l]) * Math.cos(thetaView) + (x - axisRot.x) * Math.sin(thetaView)) + axisRot[l];
-    if (counter < 1000 && michaelBay)
-    {
-      counter++;
-      console.log("x is ",xTemp," ",l," is ",wTemp);
-    }
     return  wTemp * D / (xTemp + D);
   }
   else
@@ -331,6 +319,7 @@ function animate()
 	sketchDepth();
 	shadow();
 	gameOver1();
+  calculateTheta();
 	if (adjustAxes)
 	{
 		changeRotAxes();
