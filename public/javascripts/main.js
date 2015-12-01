@@ -125,21 +125,23 @@ function checkOutOfBounds()
     outOfBounds = true;
     if (pProp[1].x > 0)
     {
-      $("#out").append('Player one just missed');
+      player2Score ++;
+      $("#missed").text('Player one just missed');
+      startPoint();
+      pProp[1].x = -5;
     }
     else if(pProp[1].x < 0)
+    {
+      player1Score ++;
+      $("#missed").text('Player two just missed');
+      startPoint();
+      pProp[1].x = 5;
+
+    }
   }
   else
   {
     outOfBounds = false;
-  }
-  if (outOfBounds)
-  {
-    $("#out").text("The ball is out");
-  }
-  else if (!outOfBounds)
-  {
-    $("#out").text("The ball is in");
   }
 }
 
@@ -308,22 +310,22 @@ function sketchDepth()
 }
 function shadow()
 {
-    var ballY = ballMove[0][0].y;
-    var ballY2 = ballMove[0][2].y;
-    var ballYAvg = (ballY + ballY2) / 2;
+  var ballY = ballMove[0][0].y;
+  var ballY2 = ballMove[0][2].y;
+  var ballYAvg = (ballY + ballY2) / 2;
 
-    var ballZ = ballMove[0][0].z;
-    var ballZ2 = ballMove[0][2].z;
-    var ballZAvg = (ballZ + ballZ2) / 2;
+  var ballZ = ballMove[0][0].z;
+  var ballZ2 = ballMove[0][2].z;
+  var ballZAvg = (ballZ + ballZ2) / 2;
 
-    var ballX = ballMove[0][0].x;
-    var ballX2 = ballMove[1][1].x;
-    var ballXAvg = (ballX + ballX2) / 2;
+  var ballX = ballMove[0][0].x;
+  var ballX2 = ballMove[1][1].x;
+  var ballXAvg = (ballX + ballX2) / 2;
 
-    var g1y = pointConvert(ballX,ballY,'y');
-    var g1z = pointConvert(ballX,groundHeight,'z');
+  var g1y = pointConvert(ballX,ballY,'y');
+  var g1z = pointConvert(ballX,groundHeight,'z');
 
-    circle(g1y,g1z,2,2 * PI);
+  circle(g1y,g1z,2,2 * PI);
 }
 
 var time = 0;
@@ -403,7 +405,7 @@ function makeLineFromPoints(point1,point2)
 
   return [a,b,c,d];
 }
-
+var goBack =false;
 function intersectionChecker()
 {
   var ballX = pObjA[1][0][0].x;
@@ -436,14 +438,14 @@ function intersectionChecker()
   var ballProp = pProp[1];
   var ballY = pObjA[1][0][2].y;
 
-
-  if ((ballX > smallPaddleX  && ballX < bigPaddleX) && (ballY > smallPaddleY && ballY < bigPaddleY) && dragonBallZ > paddleZ)
+  if ((ballX > smallPaddleX  && ballX < bigPaddleX) && (ballY > smallPaddleY && ballY < bigPaddleY) && dragonBallZ > paddleZ && !goBack)
   {
+    goBack = true
     console.log("Intersection happened! ","theta ",heroPaddleTheta);
     var R = Math.abs(ballProp.x);
     ballProp.x *= -1;
-    var r2y = -R * Math.cos(PI/2 - 2 * heroPaddleTheta);
-    var r2x = R * Math.sin(PI/2 - 2 * heroPaddleTheta);
+    var r2y = -R * Math.sin(2 * heroPaddleTheta);
+    var r2x = R * Math.cos(2 * heroPaddleTheta);
     console.log("new x velocity ",r2x,"new y velocity ",r2y);
     ballProp.x = r2x;
     ballProp.y = r2y;
@@ -477,6 +479,7 @@ function startPoint()
   pObjA = tempArray.concat(pObjA);
   ballMove = pObjA[1];
   pProp[1].y = 0;
+  goBack = false;
   $("#gameOver").text("Player one has " + player1Score + " Player two has " + player2Score);
 }
 function gameOver1()
