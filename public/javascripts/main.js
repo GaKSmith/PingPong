@@ -123,10 +123,23 @@ function checkOutOfBounds()
   if (leftOut || rightOut)
   {
     outOfBounds = true;
+    if (pProp[1].x > 0)
+    {
+      $("#out").append('Player one just missed');
+    }
+    else if(pProp[1].x < 0)
+  }
+  else
+  {
+    outOfBounds = false;
   }
   if (outOfBounds)
   {
     $("#out").text("The ball is out");
+  }
+  else if (!outOfBounds)
+  {
+    $("#out").text("The ball is in");
   }
 }
 
@@ -441,34 +454,30 @@ function intersectionChecker()
   {
     ballProp.x *= -1;
   }
-  else if (ballX > tableDepth + 100)
+  else if (ballX > initTablePos.x + tableDepth + 100)
   {
     player1Score ++;
-    var tempArray = pObjA.splice(0,2);
-    tempArray.pop();
-    transform(300,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,0,0);
     pProp[1].x = -5;
-    pProp.pop();
-    tempArray.push(pObjA.pop());
-    pObjA = tempArray.concat(pObjA);
-    ballMove = pObjA[1];
-
-    $("#gameOver").text("Player one has " + player1Score + " Player two has " + player2Score);
+    startPoint();
   }
   else if (ballX < 15)
   {
     player2Score ++;
-    var tempArray = pObjA.splice(0,2);
-    tempArray.pop();
-    transform(300,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,2,0);
     pProp[1].x = 5;
-    pProp.pop();
-    tempArray.push(pObjA.pop());
-    pObjA = tempArray.concat(pObjA);
-    ballMove = pObjA[1];
-
-    $("#gameOver").text("Player one has " + player1Score + " Player two has " + player2Score);
+    startPoint();
   }
+}
+function startPoint()
+{
+  var tempArray = pObjA.splice(0,2);
+  tempArray.pop();
+  transform(300,100,groundHeight - paddleHeight - 5,ball3d,0,0,0,1000,1000,500,-5,0,0);
+  pProp.pop();
+  tempArray.push(pObjA.pop());
+  pObjA = tempArray.concat(pObjA);
+  ballMove = pObjA[1];
+  pProp[1].y = 0;
+  $("#gameOver").text("Player one has " + player1Score + " Player two has " + player2Score);
 }
 function gameOver1()
 {
