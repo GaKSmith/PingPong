@@ -13,11 +13,6 @@ var cuboid70 = cuboidMaker(300,200,100);
 var canvas = document.getElementById("c");
 context = canvas.getContext("2d");
 var clickState = 0;
-var origin = {x:0,y:0,z:0};
-// origin.z = -380;
-origin.x = 240;
-origin.y = 50;
-origin.z = -80;
 
 function copy(arr)
 {
