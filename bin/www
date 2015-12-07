@@ -16,7 +16,7 @@ app.set('port', port);
 var server = http.createServer(app);
 var io = require('socket.io')(server);
  // * Listen on provided port, on all network interfaces.
- 
+
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -50,6 +50,23 @@ io.on('connect', function(socket) {
       console.log("Sending the array back to the clients ", keyA);
       letsGetThisGoing = true;
     }
+  });
+  var table1Players = 0;
+  var firstPlayer,secondPlayer
+  socket.on("lobby",function(key,userName,tableN){
+    console.log("The key is ",key," The user name is ",userName);
+    io.emit("gameOn",userName,key,tableN);
+    if (table1Players === 0)
+    {
+      firstPlayer = key;
+    }
+    else if (table1Players ===1)
+    {
+      secondPlayer = key;
+      // io.emit("gameOn",userName,key);
+    }
+    table1Players ++;
+
   });
 
   socket.on("send paddles", function(paddleObj,paddleProp,key){
