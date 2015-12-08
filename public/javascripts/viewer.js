@@ -3,6 +3,9 @@ var origin = {x:0,y:0,z:0};
 origin.x = 240;
 origin.y = 50;
 origin.z = -80;
+axisRot.x -= origin.x;
+axisRot.y  -= origin.y;
+axisRot.z  -= origin.z;
 console.log("Viewer is our new glib glob!!!!!");
 $("#michaelBay").click(function(){
   michaelBay = !michaelBay;
