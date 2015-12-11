@@ -51,11 +51,25 @@ io.on('connect', function(socket) {
       letsGetThisGoing = true;
     }
   });
+
+  var tableNumA = [[]]
+  var allNames = [];
   var table1Players = 0;
   var firstPlayer,secondPlayer
-  socket.on("lobby",function(key,userName,tableN){
+  socket.on("lobby",function(key,userName,tableNumber){
+    console.log("All names right before ",allNames);
     console.log("The key is ",key," The user name is ",userName);
-    io.emit("gameOn",userName,key,tableN);
+    allNames.push(userName);
+    console.log("All names ",allNames);
+    if (!tableNumA[tableNumber])
+    {
+      tableNumA[tableNumber] = [];
+    }
+    tableNumA[tableNumber].push(userName);
+    indexTemp = tableNumber;
+    console.log("table N ",tableNumA);
+
+    io.emit("gameOn",userName,key,tableNumber);
     if (table1Players === 0)
     {
       firstPlayer = key;
@@ -66,7 +80,6 @@ io.on('connect', function(socket) {
       // io.emit("gameOn",userName,key);
     }
     table1Players ++;
-
   });
 
   socket.on("send paddles", function(paddleObj,paddleProp,key){
@@ -79,7 +92,6 @@ io.on('connect', function(socket) {
     keyA = [];
     letsGetThisGoing = false;
   });
-
 });
 
 function normalizePort(val) {

@@ -43,13 +43,12 @@ function printList()
 {
   console.log("Getting printed");
   $("#list" + (indexTemp + 1)).empty();
-
-    if (tableA[indexTemp])
-    {
-      tableA[indexTemp].forEach(function(name){
+  if (tableA[indexTemp])
+  {
+    tableA[indexTemp].forEach(function(name){
       $("#list" + (indexTemp + 1)).append(name + " ");
-      });
-    }
+    });
+  }
 }
 
 socket.on('connect', function() {
