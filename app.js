@@ -9,7 +9,10 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
-
+var mongoose = require('mongoose');
+console.log("process is coming mang ",process.env.MONGO_DB_CONN_PING_PONG);
+console.log("sup ",process.env.MONGO_DB_CONN_PING_PONG);
+// mongoose.connect(process.env.MONGO_DB_CONN_PING_PONG);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -21,6 +24,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Mongoose connection
+
+
+app.use('/', routes);
+app.use('/users', users);
+
+
 
 app.use('/', routes);
 app.use('/users', users);
