@@ -8,12 +8,17 @@ canvas{
 #container{
   width:100%;
   text-align: center;
+  position: absolute;
+  top: 600px;
+}
+#information{
+  text-align: center;
 }
 #rotateRight{
-  left:66%;
+  left: 66%;
 }
 #rotateLeft{
-  left:33%;
+  left: 28%;
 }
 button {
   border: 0px;
