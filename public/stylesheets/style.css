@@ -2,10 +2,18 @@ canvas{
     background-color: gray;
     left: 0px;
     z-index: -1;
-    cursor: url(http://media.baselineresearch.com/images/77934/77934_small.jpg);
+    /*cursor: url(http://media.baselineresearch.com/images/77934/77934_small.jpg);*/
+    width:100%;
 }
 #container{
+  width:100%;
   text-align: center;
+}
+#rotateRight{
+  left:66%;
+}
+#rotateLeft{
+  left:33%;
 }
 button {
   border: 0px;

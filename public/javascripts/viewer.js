@@ -35,33 +35,3 @@ $("#zoomOut").click(function() {
   origin.x += -13;
 });
 console.log("Viewer still tight bro!!");
-(function()
-{
-  var containerW = $("#container").css("width");
-  var canvasH =$("canvas")[0].height;
-  var canvasW = $("canvas")[0].width;
-  var buttonRightRot = $("#rotateRight").css("width");
-  var buttonLeftRot = $("#rotateLeft").css("width");
-
-  function takeOutLastTwoLetters(word)
-  {
-    var number = "";
-    for(var i = 0; i < word.length-2;i++)
-    {
-      var letter = word[i];
-      number += letter;
-    }
-    return number
-  }
-
-  var containerW = Number(takeOutLastTwoLetters(containerW));
-  var rotRightW = Number(takeOutLastTwoLetters(buttonRightRot));
-  var rotLeftW = Number(takeOutLastTwoLetters(buttonLeftRot));
-
-  $("#container").css("left",-containerW / 2 + canvasW / 2 + "px");
-  $("#container").css("top",canvasH + 100);
-  $("#rotateRight").css("left",canvasW / 2 + 300 - rotRightW / 2 + "px");
-  $("#rotateLeft").css("left",canvasW / 2 - 300 - rotLeftW / 2 + "px");
-  $(".rotate").css("top","650px");
-
-})();
