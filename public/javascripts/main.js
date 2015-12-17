@@ -4,6 +4,17 @@ var socket = io();
 var randomNumber = Math.random();
 var whoAmI;
 
+
+
+
+$("#saveName").click(function() {
+  var input = $("#userName").val();
+  userName = input;
+});
+
+
+
+
 socket.on('connect', function() {
   console.log('Connected!');
 });

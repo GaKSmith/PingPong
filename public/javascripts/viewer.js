@@ -1,4 +1,5 @@
 var origin = {x:0,y:0,z:0};
+var username = "";
 // origin.z = -380;
 origin.x = 240;
 origin.y = 50;
@@ -35,3 +36,7 @@ $("#zoomOut").click(function() {
   origin.x += -13;
 });
 console.log("Viewer still tight bro!!");
+$("#saveSettings").click(function() {
+  console.log("User name is ",userName);
+  $.ajax({url:"/settings",method:"post",data: {username: userName,origin: origin}});
+});

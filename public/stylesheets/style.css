@@ -36,10 +36,14 @@ button {
   cursor:e-resize;
 }
 #zoomIn{
-  cursor: zoom-in
+  cursor: zoom-in;
 }
 #zoomOut{
-  cursor: zoom-out
+  cursor: zoom-out;
+  margin-bottom: 45px;
+}
+#saveSettings{
+  background-color: red;
 }
 .absolute{
   position: absolute;

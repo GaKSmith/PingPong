@@ -10,11 +10,11 @@ router.get('/lobby',function(req,res,next){
   res.render("lobby.ejs");
 });
 
-router.post('/settings',function(req,res,next){
-  user = new User({name:"SMONGER part4",email:"I really love Game of Thrones now"});
+router.post('/settings/',function(req,res){
+  console.log("request body is ",req.body);
+  user = new User({email:req.body.username,settings:req.body});
   user.save(function(err){
       res.send("SUP TEST");
-
   });
 });
 
