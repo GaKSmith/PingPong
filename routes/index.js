@@ -11,10 +11,19 @@ router.get('/lobby',function(req,res,next){
 });
 
 router.post('/settings/',function(req,res){
-  console.log("request body is ",req.body);
-  user = new User({email:req.body.username,settings:req.body});
+  var body = req.body;
+  settings = {x: body["origin[x]"],y: body["origin[y]"],z: body["origin[z]"],theta: body["theta"]};
+  user = new User({email: req.body.username,settings: settings});
   user.save(function(err){
       res.send("SUP TEST");
+  });
+});
+
+
+router.get("/load",function(req,res){
+  User.find({email: "Oh boy, here I go coding again!"},function(err,settings){
+    console.log("Here we go with the results ", settings);
+    res.json(settings);
   });
 });
 
